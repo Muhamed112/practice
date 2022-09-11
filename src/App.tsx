@@ -1,8 +1,14 @@
+import Container from "@mui/material/Container";
 import React from "react";
-import logo from "./logo.svg";
+import MyForm from "./components/MyForm";
 
-function App() {
-  return <div className="App">Hello there !</div>;
-}
+
+const App: React.FC = () => {
+  return (
+    <Container maxWidth="xs" sx={{ textAlign: "center" }}>
+      <MyForm />
+    </Container>
+  );
+};
 
 export default App;
