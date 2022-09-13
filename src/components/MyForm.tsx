@@ -22,20 +22,9 @@ interface FormData {
 
 const MyForm: React.FC = () => {
   const { mutateAsync, isLoading } = useMutation(createForm);
-  const [formData, setFormData] = React.useState<FormData>({
-    name: "",
-    surname: "",
-    gender: "",
-    country: "",
-  });
-
-  const handleInput = (e: any) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const formSubmit = async () => {
-    console.log(formData);
-    await mutateAsync(formData);
+  const formSubmit = async (values: FormData) => {
+    console.log(values);
+    await mutateAsync(values);
   };
 
   return (
@@ -45,59 +34,61 @@ const MyForm: React.FC = () => {
       </Typography>
       <Form
         onSubmit={formSubmit}
-        render={({ handleSubmit }) => (
+        render={({ handleSubmit, form, values }) => (
           <form id="myForm" onSubmit={handleSubmit}>
-            <CustomFormControl>
-              <Field name="name">
-                {({ props }) => (
+            <Field name="name">
+              {(props) => (
+                <CustomFormControl>
                   <TextField
+                    name={props.input.name}
+                    value={props.input.value}
                     label="Name"
-                    name="name"
-                    onChange={handleInput}
-                    {...props}
+                    onChange={props.input.onChange}
                   />
-                )}
-              </Field>
-            </CustomFormControl>
+                </CustomFormControl>
+              )}
+            </Field>
 
-            <CustomFormControl>
-              <Field name="surname">
-                {({ props }) => (
+            <Field name="surname">
+              {(props) => (
+                <CustomFormControl>
                   <TextField
+                    name={props.input.name}
+                    value={props.input.value}
                     label="Surname"
-                    name="surname"
-                    onChange={handleInput}
-                    {...props}
+                    onChange={props.input.onChange}
                   />
-                )}
-              </Field>
-            </CustomFormControl>
+                </CustomFormControl>
+              )}
+            </Field>
+
+            <Field
+              name="gender"
+              render={({ handleChange }) => (
+                <CustomFormControl>
+                  <GenderSelect handleChange={handleChange} />
+                </CustomFormControl>
+              )}
+            />
+
+            <Field
+              name="country"
+              render={({ handleChange }) => (
+                <CustomFormControl>
+                  <CountrySelect handleChange={handleChange} />
+                </CustomFormControl>
+              )}
+            />
 
             <CustomFormControl>
-              <Field name="gender">
-                {({ props }) => (
-                  <GenderSelect {...props} handleChange={handleInput} />
-                )}
-              </Field>
+              {/* click={() => form.reset()}  */}
+              <FormButton isLoading={isLoading} />
             </CustomFormControl>
 
-            <CustomFormControl>
-              <Field name="country">
-                {({ props }) => (
-                  <CountrySelect {...props} handleChange={handleInput} />
-                )}
-              </Field>
-            </CustomFormControl>
-
-            <div>
-              <CustomFormControl>
-                <FormButton isLoading={isLoading} />
-              </CustomFormControl>
-            </div>
+            <pre>{JSON.stringify(values)}</pre>
           </form>
         )}
       />
-      <pre>{JSON.stringify(formData, null, 2)}</pre>
     </Box>
   );
 };
