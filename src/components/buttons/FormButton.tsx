@@ -1,5 +1,14 @@
 import React from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { styled } from "@mui/material/styles";
+
+const CustomLoadingButton = styled(LoadingButton)`
+  background: red;
+  height: 55px;
+  :hover {
+    background: darkred;
+  }
+`;
 
 interface Props {
   isLoading: boolean;
@@ -7,7 +16,7 @@ interface Props {
 
 const FormButton: React.FC<Props> = ({ isLoading }) => {
   return (
-    <LoadingButton
+    <CustomLoadingButton
       size="large"
       loading={isLoading}
       variant="contained"
@@ -15,7 +24,7 @@ const FormButton: React.FC<Props> = ({ isLoading }) => {
       form="myForm"
     >
       Submit
-    </LoadingButton>
+    </CustomLoadingButton>
   );
 };
 
